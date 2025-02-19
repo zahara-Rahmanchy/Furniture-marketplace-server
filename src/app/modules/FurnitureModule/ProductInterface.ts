@@ -18,6 +18,10 @@ export interface Product {
   material: string;
   createdBy: Types.ObjectId;
 }
+export interface IProduct {
+  // _id: Types.ObjectId;
+  price: number;
+}
 
 export interface IProductModel extends Model<Product> {
   // eslint-disable-next-line no-unused-vars

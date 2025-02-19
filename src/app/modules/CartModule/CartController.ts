@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { CartServices } from './CartService';
+import { IReqUser } from '../AuthModule/AuthInterface';
 
 const addToCart = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = CartServices.addCartItemToDB(req.body, req.user);
+    console.log('cart: ', req.body);
+    const result = CartServices.addCartItemToDB(req.body, req.user as IReqUser);
 
-    console.log('result: ', result);
+    console.log('result controller: ', result);
     res.status(201).json({
       success: true,
       statusCode: 201,
@@ -23,7 +25,7 @@ const getCartItems = async (
   next: NextFunction,
 ) => {
   try {
-    const result = await CartServices.getCartItemsFromDb(req.user);
+    const result = await CartServices.getCartItemsFromDb(req.user as IReqUser);
     console.log('result: ', result);
     res.status(201).json({
       success: true,

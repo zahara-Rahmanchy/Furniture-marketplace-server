@@ -24,7 +24,7 @@ app.use(
 app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Welcome to Shoe Management System');
+  res.send('Welcome to Furniture Marketplace');
 });
 
 app.use(globalErrorHandler);

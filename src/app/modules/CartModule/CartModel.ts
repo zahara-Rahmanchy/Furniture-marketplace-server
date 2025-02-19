@@ -3,12 +3,12 @@ import { ICART } from './CartInterface';
 
 const cartSchema = new Schema<ICART>(
   {
-    buyer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    buyer: { type: Schema.Types.ObjectId, ref: 'User' },
     items: [
       {
         product: {
           type: Schema.Types.ObjectId,
-          ref: 'Furniture',
+          ref: 'Furnitures',
           required: true,
         },
         seller: { type: Schema.Types.ObjectId, ref: 'User', required: true },
