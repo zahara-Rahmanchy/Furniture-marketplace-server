@@ -20,4 +20,18 @@ router.get(
   OrderController.getOrders,
 );
 
+router.put(
+  '/update-orders-status',
+  auth(User_role.seller),
+
+  OrderController.updateOrderStatusBySeller,
+);
+
+router.get(
+  '/cancel-orders',
+  auth(User_role.buyer),
+
+  OrderController.cancelOrdersByBuyer,
+);
+
 export const OrderRoutes = router;

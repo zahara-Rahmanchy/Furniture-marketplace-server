@@ -16,3 +16,13 @@ export const OrderValidationSchema = Joi.object({
     'any.required': 'Billing address is required!',
   }),
 });
+
+export const statusUpdateSchema = Joi.object({
+  status: Joi.string()
+    .valid('pending', 'cancelled', 'processing', 'shipped', 'delivered')
+    .required(),
+});
+
+export const cancelOrderSchema = Joi.object({
+  status: Joi.string().valid('cancelled').required(),
+});

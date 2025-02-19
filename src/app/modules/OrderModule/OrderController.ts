@@ -35,7 +35,53 @@ const getOrders = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
+const updateOrderStatusBySeller = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { status, orderId } = req.body;
+    const result = await OrderServices.updateOrderStatusInDB(
+      req.user as IReqUser,
+      status,
+      orderId,
+    );
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: 'Orders status updated successfully',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+const cancelOrdersByBuyer = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { status, orderId } = req.body;
+    const result = await OrderServices.cancelOrderByBuyer(
+      req.user as IReqUser,
+      status,
+      orderId,
+    );
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: 'Orders cancelled successfully',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 export const OrderController = {
   placeOrder,
   getOrders,
+  updateOrderStatusBySeller,
+  cancelOrdersByBuyer,
 };

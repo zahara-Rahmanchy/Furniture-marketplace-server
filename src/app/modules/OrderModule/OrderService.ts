@@ -36,7 +36,7 @@ const getOrdersDataFromDB = async (user: IReqUser) => {
       })
       .populate({
         path: 'buyer',
-        select: 'username email',
+        select: 'username email -_id',
       });
     return result;
   }
@@ -48,14 +48,66 @@ const getOrdersDataFromDB = async (user: IReqUser) => {
       })
       .populate({
         path: 'items.seller',
-        select: 'username email',
+        select: 'username email -_id',
       });
 
     return result;
   }
 };
 
+const updateOrderStatusInDB = async (
+  user: IReqUser,
+  status: string,
+  orderId: string,
+) => {
+  const sellerId = await User.isCreatedBy(user.username);
+  if (!sellerId) {
+    throw new Error('Invalid seller!');
+  }
+  const result = await OrderModel.findByIdAndUpdate(
+    {
+      _id: orderId,
+      'items.seller': sellerId,
+    },
+    {
+      $set: {
+        status: status,
+      },
+    },
+    { new: true },
+  );
+  return result;
+};
+
+// TODO remove specific product from the order
+const cancelOrderByBuyer = async (
+  user: IReqUser,
+  status: string,
+  orderId: string,
+  //   productId: string,
+) => {
+  const buyerId = await User.isCreatedBy(user.username);
+  if (!buyerId) {
+    throw new Error('Invalid buyer!');
+  }
+  const result = await OrderModel.findByIdAndUpdate(
+    {
+      _id: orderId,
+      buyer: buyerId,
+    },
+    {
+      $set: {
+        status: status,
+      },
+    },
+    { new: true },
+  );
+
+  return result;
+};
 export const OrderServices = {
   placeOrderInDB,
   getOrdersDataFromDB,
+  updateOrderStatusInDB,
+  cancelOrderByBuyer,
 };
