@@ -12,6 +12,9 @@ const OrderSchema = new Schema<IOrder>(
           ref: 'Furnitures',
           required: true,
         },
+        instructions: {
+          type: String,
+        },
         seller: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         quantity: { type: Number, required: true, default: 1 },
         // Storing price at the time of purchase

@@ -13,5 +13,11 @@ router.post(
   validateRequest(OrderValidationSchema),
   OrderController.placeOrder,
 );
+router.get(
+  '/get-orders',
+  auth(User_role.buyer, User_role.seller),
+
+  OrderController.getOrders,
+);
 
 export const OrderRoutes = router;
