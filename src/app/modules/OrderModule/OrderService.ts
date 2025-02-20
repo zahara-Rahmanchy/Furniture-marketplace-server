@@ -1,6 +1,8 @@
 import { IReqUser } from '../AuthModule/AuthInterface';
 import { IFetchedCartData } from '../CartModule/CartInterface';
 import { CartModel } from '../CartModule/CartModel';
+import { ProductModel } from '../FurnitureModule/Productmodel';
+import { SalesModel } from '../SalesManagementModule/SalesModel';
 import { User_role } from '../UserModule/UserContants';
 import { User } from '../UserModule/UserModel';
 import { IOrderPostData } from './OrderInterface';
@@ -55,6 +57,29 @@ const getOrdersDataFromDB = async (user: IReqUser) => {
   }
 };
 
+// const updateOrderStatusInDB = async (
+//   user: IReqUser,
+//   status: string,
+//   orderId: string,
+// ) => {
+//   const sellerId = await User.isCreatedBy(user.username);
+//   if (!sellerId) {
+//     throw new Error('Invalid seller!');
+//   }
+//   const result = await OrderModel.findByIdAndUpdate(
+//     {
+//       _id: orderId,
+//       'items.seller': sellerId,
+//     },
+//     {
+//       $set: {
+//         status: status,
+//       },
+//     },
+//     { new: true },
+//   );
+//   return result;
+// };
 const updateOrderStatusInDB = async (
   user: IReqUser,
   status: string,
@@ -64,19 +89,41 @@ const updateOrderStatusInDB = async (
   if (!sellerId) {
     throw new Error('Invalid seller!');
   }
-  const result = await OrderModel.findByIdAndUpdate(
-    {
-      _id: orderId,
-      'items.seller': sellerId,
-    },
-    {
-      $set: {
-        status: status,
+
+  // Find the order
+  const order = await OrderModel.findOne({
+    _id: orderId,
+    'items.seller': sellerId,
+  });
+
+  if (!order) {
+    throw new Error('Order not found!');
+  }
+
+  // If status is "shipped", update product quantities
+  if (status === 'shipped') {
+    const bulkUpdates = order.items.map((item) => ({
+      updateOne: {
+        filter: { _id: item.product._id },
+        update: { $inc: { quantity: -item.quantity } }, // Reduce stock
       },
-    },
+    }));
+
+    await ProductModel.bulkWrite(bulkUpdates); // Perform batch update
+  }
+
+  if (status === 'delivered') {
+    console.log('ordered items: ', order);
+  }
+
+  // Update order status in a single step
+  const updatedOrder = await OrderModel.findByIdAndUpdate(
+    orderId,
+    { $set: { status } },
     { new: true },
   );
-  return result;
+
+  return updatedOrder;
 };
 
 // TODO remove specific product from the order

@@ -8,12 +8,12 @@ const app: Application = express();
 
 // parsers
 app.use(express.json());
-// http://localhost:5173,
-// https://shoemanagementsystem.netlify.app
+// ,
+// https://furniture-marketplace-client.vercel.app
 
 app.use(
   cors({
-    origin: 'https://furniture-marketplace-client.vercel.app',
+    origin: 'http://localhost:5173',
     credentials: true,
   }),
 );

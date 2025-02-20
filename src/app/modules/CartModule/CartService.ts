@@ -19,7 +19,7 @@ const addCartItemToDB = async (cart: ICART, user: IReqUser) => {
 
 const getCartItemsFromDb = async (user: IReqUser) => {
   const buyer = await User.isCreatedBy(user.username);
-  const result = await CartModel.findOne({ buyer })
+  const result = await CartModel.find({ buyer })
     .populate({
       path: 'items.product',
       select:
@@ -29,7 +29,8 @@ const getCartItemsFromDb = async (user: IReqUser) => {
       path: 'items.seller',
       select: 'name email',
     });
-  return result;
+  const itemCount = result.length || 0;
+  return { result, TotalCartItems: itemCount };
 };
 export const CartServices = {
   addCartItemToDB,
