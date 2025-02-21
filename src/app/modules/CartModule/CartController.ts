@@ -5,7 +5,10 @@ import { IReqUser } from '../AuthModule/AuthInterface';
 const addToCart = async (req: Request, res: Response, next: NextFunction) => {
   try {
     console.log('cart: ', req.body);
-    const result = CartServices.addCartItemToDB(req.body, req.user as IReqUser);
+    const result = await CartServices.addCartItemToDB(
+      req.body,
+      req.user as IReqUser,
+    );
 
     console.log('result controller: ', result);
     res.status(201).json({
@@ -30,7 +33,34 @@ const getCartItems = async (
     res.status(201).json({
       success: true,
       statusCode: 201,
-      message: 'Furniture added to cart successfully!',
+      message: 'Furnitures of cart fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateQuantity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    console.log('cart: ', req.body);
+    const { productId, sellerName, quantity } = req.body;
+    const result = await CartServices.updateQuantityOfItem(
+      req.user as IReqUser,
+      productId,
+      sellerName,
+      quantity,
+    );
+
+    console.log('result controller: ', result);
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: 'Quantity updated successfully!',
       data: result,
     });
   } catch (error) {
@@ -41,4 +71,5 @@ const getCartItems = async (
 export const CartController = {
   addToCart,
   getCartItems,
+  updateQuantity,
 };

@@ -2,7 +2,7 @@ import { IReqUser } from '../AuthModule/AuthInterface';
 import { IFetchedCartData } from '../CartModule/CartInterface';
 import { CartModel } from '../CartModule/CartModel';
 import { ProductModel } from '../FurnitureModule/Productmodel';
-import { SalesModel } from '../SalesManagementModule/SalesModel';
+// import { SalesModel } from '../SalesManagementModule/SalesModel';
 import { User_role } from '../UserModule/UserContants';
 import { User } from '../UserModule/UserModel';
 import { IOrderPostData } from './OrderInterface';

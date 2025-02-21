@@ -14,7 +14,8 @@
     Buyers Can
 
     - View the furniture list.
-    - View Products based on filters.
+    - View Products based on filters and add to cart.
+    - Plac order by confirming the cart items
     - Search product based on their name, type or category.
     - Make a polish Request and view the current status.
     - Verify a product based on their product Id and its details
@@ -49,4 +50,4 @@
 
 ### Live Link
 
-    -
+    - https://furniture-marketplace-client.vercel.app

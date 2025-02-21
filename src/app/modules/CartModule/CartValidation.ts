@@ -30,3 +30,9 @@ export const CartValidationSchema = Joi.object({
       'any.required': 'Items field is required.',
     }),
 });
+
+// export const cartUpdateValidation = Joi.object({
+//   productId: Joi.string().required().message('Product id is required'),
+//   sellerName: Joi.string().required().message('Seller Name is required'),
+//   quantity: Joi.number().min(1).required().message('Seller Name is required'),
+// });

@@ -8,13 +8,14 @@ const app: Application = express();
 
 // parsers
 app.use(express.json());
-// ,
+// http://localhost:5173/
 // https://furniture-marketplace-client.vercel.app
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://furniture-marketplace-client.vercel.app',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
   }),
 );
 
