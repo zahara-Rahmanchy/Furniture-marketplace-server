@@ -4,16 +4,16 @@ import cors from 'cors';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './app/routes';
 
+
 const app: Application = express();
 
 // parsers
 app.use(express.json());
-// http://localhost:5173/
-// https://furniture-marketplace-client.vercel.app
 
+const allowedOrigin = process.env.FRONTEND_URL
 app.use(
   cors({
-    origin: 'https://furniture-marketplace-client.vercel.app',
+    origin: allowedOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   }),

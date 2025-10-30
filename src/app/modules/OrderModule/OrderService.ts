@@ -23,11 +23,16 @@ const placeOrderInDB = async (user: IReqUser, order: IOrderPostData) => {
     // totalAmount,
     ...order,
   });
+  const deleteCart = await CartModel.deleteOne({
+     buyer: buyerId,
+  })
+  console.log("deleted: ",deleteCart)
   return result;
 };
 
 // get order based on role
 const getOrdersDataFromDB = async (user: IReqUser) => {
+  console.log("in order sevice",user.role)
   const user_id = await User.isCreatedBy(user.username);
 
   if (user.role === User_role.seller) {
@@ -39,11 +44,15 @@ const getOrdersDataFromDB = async (user: IReqUser) => {
       .populate({
         path: 'buyer',
         select: 'username email -_id',
-      });
+      })
+      
     return result;
   }
   if (user.role === User_role.buyer) {
-    const result = await OrderModel.find({ buyer: user_id })
+    const result = await OrderModel.find({ buyer: user_id,
+        status: { $nin: ['delivered', 'cancelled'] },
+
+     })
       .populate({
         path: 'items.product',
         select: 'name productId price type image instructions material color',

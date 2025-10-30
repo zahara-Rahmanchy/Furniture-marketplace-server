@@ -17,17 +17,29 @@ const addCartItemToDB = async (cart: ICART, user: IReqUser) => {
   //   buyer,
   // });
 
+  // const result = await CartModel.findOneAndUpdate(
+  //   { buyer: new Types.ObjectId(buyer) },
+  //   {
+  //     $each: {
+  //       $addToSet: {
+  //         items: items,
+  //       },
+  //     },
+  //   },
+  //   { new: true, upsert: true },
+  // );
   const result = await CartModel.findOneAndUpdate(
     { buyer: new Types.ObjectId(buyer) },
     {
-      $each: {
-        $addToSet: {
-          items: items,
+      $addToSet: {
+        items: {
+          $each: items,
         },
       },
     },
     { new: true, upsert: true },
   );
+  
 
   console.log('result: ', result);
   return result;
